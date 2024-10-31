@@ -13,7 +13,7 @@ writeFileSync("./temporary/fileA.txt", `This is sync line 2\n`, {
 writeFileSync("./temporary/fileA.txt", `This is sync line 3\n`, {
   flag: "a",
 });
-console.log(readFileSync("./temporary/fileA.txt", "utf8"));
+console.log(readFileSync("./temporary/fileA.txt", "utf8")); // without UTF8 code it will return Buffer numbers
 
 //read the file
 console.log("end!");
