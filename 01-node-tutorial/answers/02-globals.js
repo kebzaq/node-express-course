@@ -9,4 +9,4 @@ console.log(__dirname);
 // console.log(require);
 // console.log(module);
 // console.log(process);
-console.log(global.__dirname);
+console.log(__dirname);
