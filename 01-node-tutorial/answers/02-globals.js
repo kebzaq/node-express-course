@@ -12,6 +12,6 @@ console.log(__dirname);
 // console.log(process);
 
 // Global variable:
-MY_VAR = "Hi, there!"; // this is global variable
-console.log(MY_VAR);
-console.log(global);
+// MY_VAR = "Hi, there!"; // this is global variable
+// console.log(MY_VAR);
+// console.log(global);
