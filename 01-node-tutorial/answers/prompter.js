@@ -21,7 +21,7 @@ const getBody = (req, callback) => {
 };
 
 // here, you could declare one or more variables to store what comes back from the form.
-let item = "Enter something below.";
+let item = "Enter something below...";
 let backgroundColor = "white";
 
 // here, you can change the form below to modify the input fields and what is displayed.
@@ -47,17 +47,33 @@ const server = http.createServer((req, res) => {
       // here, you can add your own logic
       if (body["item"]) {
         item = body["item"];
-        if (item === "red") {
-          backgroundColor = "red";
+        if (item === "pink") {
+          backgroundColor = "pink";
         } else if (item === "blue") {
           backgroundColor = "blue";
         } else {
-          backgroundColor = "grey";
+          backgroundColor = "green";
         }
       } else {
         item = "Nothing was entered.";
         backgroundColor = "yellow";
       }
+      // if (item >= 2013) {
+      //   console.log(`You age range is: Generation Alpha`);
+      // } else if ((item >= 1997) & (item <= 2012)) {
+      //   console.log(`You age range is: Generation Z`);
+      // } else if ((item >= 1981) & (item <= 1996)) {
+      //   console.log(`You age range is: Millenials`);
+      // } else if ((item >= 1965) & (item <= 1980)) {
+      //   console.log(`You age range is: Generation X`);
+      // } else if ((item >= 1946) & (item <= 1964)) {
+      //   console.log(`You age range is: Baby Boomers`);
+      // } else if ((item >= 1928) & (item <= 1945)) {
+      //   console.log(`You age range is: Silent Generation`);
+      // } else {
+      //   console.log(`You age range is: Unknown`);
+      // document.body.innerHTML += "You age range is: Unknown";
+      // }
       // Your code changes would end here
       res.writeHead(303, {
         Location: "/",
@@ -67,6 +83,10 @@ const server = http.createServer((req, res) => {
   } else {
     res.end(form());
   }
+});
+
+server.on("request", (req) => {
+  console.log("event received: ", req.method, req.url);
 });
 
 server.listen(3000);
