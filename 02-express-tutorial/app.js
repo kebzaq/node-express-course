@@ -3,11 +3,16 @@ const express = require("express");
 const { products } = require("./data");
 const app = express();
 
+const logger = (req, res, next) => {
+  console.log(req.method);
+  console.log(req.url);
+};
+// logger();
 // Task 4 - load static assets from public folder
 app.use(express.static("./public"));
 
 // Task 7.0 - return json file to test
-app.get("/api/v1/test", (req, res) => {
+app.get("/api/v1/test", logger, (req, res) => {
   res.json({ message: "It worked!" });
 });
 
@@ -22,6 +27,7 @@ app.get("/api/v1/products/:productID", (req, res) => {
   if (req.params.productID === "7") {
     res.json(req.params);
     // res.json({ productId: 7 });
+    return;
   }
   // Task 7.1.2 - returns single product by ID
   const idToFind = parseInt(req.params.productID);
@@ -29,7 +35,7 @@ app.get("/api/v1/products/:productID", (req, res) => {
   // Task 7.1.2:1 - returns 404 if product not found
   if (!product) {
     res
-      .status(404)
+      .status(200)
       .json({ message: `That product (${idToFind}) was not found.` });
   }
   // returns single product if found
