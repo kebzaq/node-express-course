@@ -27,7 +27,7 @@ app.get("/api/v1/products/:productID", (req, res) => {
   // Task 7.1.1 - returns productID === 7 json message
   if (req.params.productID === "7") {
     res.json(req.params);
-    // res.json({ productId: 7 });
+    /// res.json({ productId: 7 });
     return;
   }
   // Task 7.1.2 - returns single product by ID
