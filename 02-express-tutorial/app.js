@@ -17,6 +17,7 @@ app.get("/api/v1/test", logger, (req, res) => {
   return res.json({ message: "It worked!" });
   // return;
   console.log("TEST after");
+  return;
 });
 
 // Task 7.1 - returns all products from data.js
@@ -28,7 +29,6 @@ app.get("/api/v1/products/:productID", (req, res) => {
   if (req.params.productID === "7") {
     res.json(req.params);
     /// res.json({ productId: 7 });
-    return;
   }
   // Task 7.1.2 - returns single product by ID
   const idToFind = parseInt(req.params.productID);
