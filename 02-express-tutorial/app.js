@@ -6,6 +6,7 @@ const app = express();
 const logger = (req, res, next) => {
   console.log(req.method);
   console.log(req.url);
+  next();
 };
 // logger();
 // Task 4 - load static assets from public folder
@@ -13,13 +14,13 @@ app.use(express.static("./public"));
 
 // Task 7.0 - return json file to test
 app.get("/api/v1/test", logger, (req, res) => {
-  res.json({ message: "It worked!" });
+  return res.json({ message: "It worked!" });
+  // return;
+  console.log("TEST after");
 });
 
 // Task 7.1 - returns all products from data.js
-app.get("/api/v1/products", (req, res) => {
-  res.json(products);
-});
+app.get("/api/v1/products", (req, res) => res.json(products));
 
 // Task 7.1.1 - returns requested single product by ID
 app.get("/api/v1/products/:productID", (req, res) => {
@@ -37,6 +38,7 @@ app.get("/api/v1/products/:productID", (req, res) => {
     res
       .status(200)
       .json({ message: `That product (${idToFind}) was not found.` });
+    return;
   }
   // returns single product if found
   res.json(product);
