@@ -5,6 +5,13 @@ const peopleRouter = require("./routes/people");
 const cookieParser = require("cookie-parser");
 const app = express();
 
+app.use(express.static("./methods-public"));
+
+// to parse request body
+// app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cookieParser());
+
 // create middleware function logger
 const logger = (req, res, next) => {
   console.log(req.method);
@@ -13,18 +20,38 @@ const logger = (req, res, next) => {
   next();
 };
 
+const auth = (req, res, next) => {
+  if (req.cookies.name) {
+    req.user = req.cookies.name;
+    next();
+  } else {
+    res.status(401).json({ status: false, message: "Unauthorized" });
+  }
+};
 // app.use(logger);
 // Task 4 - load static assets from public folder
 // app.use(express.static("./public"));
-app.use(express.static("./methods-public"));
-
-// to parse request body
-// app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(cookieParser());
 
 // app.get("/api", logger, (req, res) => {});
 
+// logon
+app.post("/logon", (req, res) => {
+  if (!req.body.name) {
+    return res
+      .status(400)
+      .json({ status: false, message: "Name is required to logon" });
+  }
+  res.cookie("name", req.body.name);
+  res.status(201).json({ success: true, message: `Hello ${req.body.name}` });
+});
+// logoff
+app.delete("/logoff", (req, res) => {
+  res.clearCookie("name");
+  res.json({ status: true, message: `${req.cookies.name} is logged off` });
+});
+app.get("/test", auth, (req, res) => {
+  res.json({ status: true, message: `Welcome ${req.user}` });
+});
 // Task 7.0 - return json file to test
 app.get("/api/v1/test", (req, res) => {
   res.json({ message: "It worked!" });
