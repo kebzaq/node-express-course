@@ -1,16 +1,77 @@
 console.log("Express Tutorial");
 const express = require("express");
-const { products } = require("./data");
+const { products, people } = require("./data");
+const peopleRouter = require("./routes/people");
+const cookieParser = require("cookie-parser");
 const app = express();
 
-// Task 4 - load static assets from public folder
-app.use(express.static("./public"));
+app.use(express.static("./methods-public"));
 
+// to parse request body
+// app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cookieParser());
+
+// create middleware function logger
+const logger = (req, res, next) => {
+  console.log(req.method);
+  console.log(req.url);
+  console.log(new Date());
+  next();
+};
+
+const auth = (req, res, next) => {
+  if (req.cookies.name) {
+    req.user = req.cookies.name;
+    next();
+  } else {
+    res.status(401).json({ status: false, message: "Unauthorized" });
+  }
+};
+// app.use(logger);
+// Task 4 - load static assets from public folder
+// app.use(express.static("./public"));
+
+// app.get("/api", logger, (req, res) => {});
+
+// logon
+app.post("/logon", (req, res) => {
+  if (!req.body.name) {
+    return res
+      .status(400)
+      .json({ status: false, message: "Name is required to logon" });
+  }
+  res.cookie("name", req.body.name);
+  res.status(201).json({ success: true, message: `Hello ${req.body.name}` });
+});
+// logoff
+app.delete("/logoff", (req, res) => {
+  res.clearCookie("name");
+  res.json({ status: true, message: `${req.cookies.name} is logged off` });
+});
+app.get("/test", auth, (req, res) => {
+  res.json({ status: true, message: `Welcome ${req.user}` });
+});
 // Task 7.0 - return json file to test
 app.get("/api/v1/test", (req, res) => {
   res.json({ message: "It worked!" });
 });
 
+// // create API's for people
+app.use("/api/v1/people", peopleRouter);
+// app.get("/api/v1/people", (req, res) => {
+//   console.log("People api");
+//   res.json(people);
+// });
+
+// app.post("/api/v1/people", (req, res) => {
+//   if (!req.body.name) {
+//     res.status(400).json({ success: false, message: "Please provide a name" });
+//     return;
+//   }
+//   people.push({ id: people.length + 1, name: req.body.name });
+//   return res.status(201).json({ success: true, name: req.body.name });
+// });
 // Task 7.1 - returns all products from data.js
 app.get("/api/v1/products", (req, res) => {
   res.json(products);
