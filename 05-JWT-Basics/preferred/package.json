@@ -1,0 +1,18 @@
+{
+  "name": "preferred",
+  "version": "1.0.0",
+  "description": "JWT basics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "expree": "^2.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^5.0.9"
+  }
+}
